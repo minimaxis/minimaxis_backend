@@ -1,0 +1,80 @@
+@baseUrl = http://localhost:3333/v200
+
+@authToken = {{authenticate.response.body.access_token}}
+
+# @name authenticate
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "emailUser": "victor@icloud.com",
+  "passwordUser": "12345"
+}
+
+###
+
+# @name create_firt_usuario
+POST {{baseUrl}}/usuario-first
+Content-Type: application/json
+
+{
+  "descricaoUser": "Victor",
+  "emailUser": "victor@icloud.com",
+  "passwordUser": "12345"
+}
+
+###
+
+# @name refresh
+POST {{baseUrl}}/refresh
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{ 
+
+}
+###
+
+# @name create_usuario
+POST {{baseUrl}}/usuarios
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "emailUser": "hhh@aaa.com.br",
+  "passwordUser": "Senha",
+  "descricaoUser": "TESTE"
+}
+
+###
+
+# @name listall_usuarios
+GET {{baseUrl}}/usuarios
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name update_usuarios
+PUT {{baseUrl}}/usuarios/d14160de-68bb-4795-a325-5b430d78ba4d
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "descricaoUser": "Edusssss",
+  "log_user_alt": "d14160de-"
+}
+
+###
+
+# @name admin_update_usuarios
+PUT {{baseUrl}}/admin/usuarios/20de68fe-3102-4aac-bc62-9d0af65c936a
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "descricao": "Edson",
+  "log_user_alt": "d14160de-"
+}
+
+###

@@ -1,0 +1,38 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Usuario {
+  userId           String    @id(map: "pk_usuario") @default(uuid()) @map("user_id") @db.VarChar(36)
+  emailUser        String    @unique @map("email_user") @db.VarChar(255)
+  passwordUser     String    @map("password_user") @db.VarChar(1024)
+  descricaoUser    String    @map("descricao_user") @db.VarChar(36)
+  nivelId          String?   @map("nivel_id") @db.VarChar(36)
+  ativo            Boolean   @default(true)
+  bloqueado        Boolean   @default(false)
+  onLine           Boolean   @default(false) @map("on_line")
+  replicar         Boolean   @default(false)
+  logDataRep       DateTime? @map("log_data_rep") @db.Timestamptz(6)
+  logDataCad       DateTime  @default(now()) @map("log_data_cad") @db.Timestamptz(6)
+  logUserCad       String    @map("log_user_cad") @db.VarChar(36)
+  logDataAlt       DateTime? @map("log_data_alt") @db.Timestamptz(6)
+  logUserAlt       String?   @map("log_user_alt") @db.VarChar(36)
+  termCad          String?   @map("term_cad") @db.VarChar(36)
+  termAlt          String?   @map("term_alt") @db.VarChar(36)
+  permitidoEditDel Boolean   @default(true) @map("permitido_edit_del")
+  permitido        Boolean   @default(true)
+
+  fk_usuario_log_user_cad Usuario      @relation("usuario_log_user_cad", fields: [logUserCad], references: [userId], onDelete: NoAction, map: "fk_usuario_log_user_cad")
+  fk_usuario_log_user_alt Usuario?     @relation("usuario_log_user_alt", fields: [logUserAlt], references: [userId], onDelete: NoAction, map: "fk_usuario_log_user_alt")
+ 
+  usuario_log_user_alt           Usuario[]          @relation("usuario_log_user_alt")
+  usuario_log_user_cad           Usuario[]          @relation("usuario_log_user_cad")
+
+
+  @@map("usuario")
+}
